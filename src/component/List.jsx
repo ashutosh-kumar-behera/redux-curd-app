@@ -1,4 +1,16 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUser } from "../redux/actions";
+
 export const List = () => {
+
+    const dispatch=useDispatch();
+    const data = useSelector(state=>state.appStore);
+
+    useEffect(()=>{
+        dispatch(getAllUser())
+    },[dispatch])
+    
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-20">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
