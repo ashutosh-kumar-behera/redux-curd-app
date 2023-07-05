@@ -5,12 +5,18 @@ import { getAllUser } from "../redux/actions";
 export const List = () => {
 
     const dispatch=useDispatch();
-    const data = useSelector(state=>state.appStore);
+    const {users,error} = useSelector(state=>state.appStore);
 
     useEffect(()=>{
         dispatch(getAllUser())
     },[dispatch])
-    
+
+    if(error){
+        return(
+            <div className="text-lg">Loading...</div>
+        )
+    }
+
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-20">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -37,28 +43,23 @@ export const List = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td className="px-6 py-4">1</td>
-            <td className="px-6 py-4">Tom</td>
-            <td className="px-6 py-4">tom@gmail.com</td>
-            <td className="px-6 py-4">15200</td>
-            <td className="px-6 py-4">Male</td>
-            <td className="px-6 py-4 text-right flex justify-around pl-1 gap-2">
-              <button className="bg-green-600 rounded-md p-2 text-white ">Edit</button>
-              <button className="bg-red-600 rounded-md p-2 text-white ">Delete</button>
-            </td>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td className="px-6 py-4">1</td>
-            <td className="px-6 py-4">Tom</td>
-            <td className="px-6 py-4">tom@gmail.com</td>
-            <td className="px-6 py-4">15200</td>
-            <td className="px-6 py-4">Male</td>
-            <td className="px-6 py-4 text-right flex justify-around pl-1 gap-2">
-              <button className="bg-green-600 rounded-md p-2 text-white ">Edit</button>
-              <button className="bg-red-600 rounded-md p-2 text-white ">Delete</button>
-            </td>
-          </tr>
+            {
+                users.map(({id,name,email,salary,gender},idx)=>{
+                    return(
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={id}>
+                            <td className="px-6 py-4">{idx}</td>
+                            <td className="px-6 py-4">{name}</td>
+                            <td className="px-6 py-4">{email}</td>
+                            <td className="px-6 py-4">{salary}</td>
+                            <td className="px-6 py-4">{gender}</td>
+                            <td className="px-6 py-4 text-right flex justify-around pl-1 gap-2">
+                            <button className="bg-green-600 rounded-md p-2 text-white ">Edit</button>
+                            <button className="bg-red-600 rounded-md p-2 text-white ">Delete</button>
+                            </td>
+                        </tr>
+                    )
+                })
+            }
         </tbody>
       </table>
     </div>
