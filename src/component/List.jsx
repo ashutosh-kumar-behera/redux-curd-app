@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUser, userDelete } from "../redux/actions";
 
-export const List = () => {
+export const List = ({onEdit}) => {
 
     const dispatch=useDispatch();
-    const {users,loading} = useSelector(state=>state.appStore);
+    const {loading,users} = useSelector(state=>state.appStore);
 
     useEffect(()=>{
         dispatch(getAllUser())
@@ -48,17 +48,17 @@ export const List = () => {
         </thead>
         <tbody>
             {
-                users.map(({id,name,email,salary,gender},idx)=>{
+                users.map((el,idx)=>{
                     return(
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={id}>
-                            <td className="px-6 py-4">{idx}</td>
-                            <td className="px-6 py-4">{name}</td>
-                            <td className="px-6 py-4">{email}</td>
-                            <td className="px-6 py-4">{salary}</td>
-                            <td className="px-6 py-4">{gender}</td>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={el.id}>
+                            <td className="px-6 py-4">{idx+1}</td>
+                            <td className="px-6 py-4">{el.name}</td>
+                            <td className="px-6 py-4">{el.email}</td>
+                            <td className="px-6 py-4">{el.salary}</td>
+                            <td className="px-6 py-4">{el.gender}</td>
                             <td className="px-6 py-4 text-right flex justify-around pl-1 gap-2">
-                            <button className="bg-green-600 rounded-md p-2 text-white ">Edit</button>
-                            <button className="bg-red-600 rounded-md p-2 text-white " onClick={()=>onDelete(id)}>Delete</button>
+                            <button className="bg-green-600 rounded-md p-2 text-white "onClick={()=>onEdit(el)}>Edit</button>
+                            <button className="bg-red-600 rounded-md p-2 text-white " onClick={()=>onDelete(el.id)}>Delete</button>
                             </td>
                         </tr>
                     )

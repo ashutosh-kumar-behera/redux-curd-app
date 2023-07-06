@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createUser, getAllUser, userDelete,  } from "./actions";
+import { createUser, getAllUser, userDelete, userUpdate,  } from "./actions";
 
 const userSlice = createSlice({
     name:"user",
@@ -50,8 +50,25 @@ const userSlice = createSlice({
           .addCase(userDelete.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
+          })
+          //update
+          .addCase(userUpdate.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(userUpdate.fulfilled, (state, action) => {
+            state.loading = false;
+            state.users = state.users.map((ele) => {
+              if (ele.id === action.payload.id) {
+                return (ele = action.payload);
+              } else {
+                return ele;
+              }
+            });
+          })
+          .addCase(userUpdate.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
           });
-
     }
 })
 
