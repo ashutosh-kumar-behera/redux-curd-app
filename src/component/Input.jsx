@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createUser } from "../redux/actions";
 
 export const Input = () => {
+
+    const dispatch = useDispatch();
 
     const[data, setData]=useState({name:"",email:"", salary:"",gender:""})
     const handleChange =(e)=>{
@@ -9,7 +13,7 @@ export const Input = () => {
 
     const handleSubmit =(e)=>{
         e.preventDefault();
-        console.log(data);
+        dispatch(createUser(data));
         setData({ name: "", email: "", salary: "", gender: "" });
     }
 

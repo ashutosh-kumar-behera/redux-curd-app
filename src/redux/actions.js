@@ -11,3 +11,12 @@ export const getAllUser=createAsyncThunk('getAllUser', async()=>{
         return Promise.reject(error)
     }
 })
+
+export const createUser = createAsyncThunk('create', async(data)=>{
+    try{
+        const user = await axios.post("https://63b866593329392049dbd33d.mockapi.io/user", data)
+        return user.data
+    }catch(error){
+        Promise.reject(error)
+    }
+})
