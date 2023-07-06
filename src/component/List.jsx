@@ -1,17 +1,21 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUser } from "../redux/actions";
+import { getAllUser, userDelete } from "../redux/actions";
 
 export const List = () => {
 
     const dispatch=useDispatch();
-    const {users,error} = useSelector(state=>state.appStore);
+    const {users,loading} = useSelector(state=>state.appStore);
 
     useEffect(()=>{
         dispatch(getAllUser())
     },[dispatch])
 
-    if(error){
+    const onDelete =(id)=>{
+      dispatch(userDelete(id))
+    }
+
+    if(loading){
         return(
             <div className="text-lg">Loading...</div>
         )
@@ -54,7 +58,7 @@ export const List = () => {
                             <td className="px-6 py-4">{gender}</td>
                             <td className="px-6 py-4 text-right flex justify-around pl-1 gap-2">
                             <button className="bg-green-600 rounded-md p-2 text-white ">Edit</button>
-                            <button className="bg-red-600 rounded-md p-2 text-white ">Delete</button>
+                            <button className="bg-red-600 rounded-md p-2 text-white " onClick={()=>onDelete(id)}>Delete</button>
                             </td>
                         </tr>
                     )
