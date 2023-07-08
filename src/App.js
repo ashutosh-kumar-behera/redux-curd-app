@@ -1,52 +1,82 @@
-import { useState } from "react";
-import { Input } from "./component/Input";
-import { List } from "./component/List";
+import React, { useState } from "react";
+import "./App.css";
+import { Input } from "./components/Input";
+import { List } from "./components/List";
 import { useDispatch } from "react-redux";
-import { createUser, userUpdate } from "./redux/actions";
+import { createUser, updateUser } from "./redux/actions";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { Header } from "./components/Header";
 
 function App() {
-  const [getInput, setInput] = useState({
+  const navigate = useNavigate();
+
+  const [getData, setData] = useState({
     name: "",
     email: "",
     salary: "",
     gender: "",
   });
   const [getEdit, setEdit] = useState(false);
-
   const dispatch = useDispatch();
 
-  const onChangeHandler = (e) => {
-    setInput({ ...getInput, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setData({ ...getData, [e.target.name]: e.target.value });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(createUser(getInput));
-    setInput({ name: "", email: "", salary: "", gender: "" });
+    dispatch(createUser(getData));
+    setData({ name: "", email: "", salary: "", gender: "" });
+    navigate("/");
   };
 
   const onEdit = (el) => {
-    setInput(el);
+    setData(el);
     setEdit(true);
+    navigate("/update");
   };
 
   const onUpdate = (e) => {
     e.preventDefault();
-    dispatch(userUpdate(getInput));
-    setInput({ name: "", email: "", salary: "", gender: "" });
+    dispatch(updateUser(getData));
+    setData({ name: "", email: "", salary: "", gender: "" });
     setEdit(false);
+    navigate("/");
   };
 
   return (
-    <div>
-      <Input
-        getInput={getInput}
-        onChangeHandler={onChangeHandler}
-        onSubmit={onSubmit}
-        getEdit={getEdit}
-        onUpdate={onUpdate}
-      />
-      <List onEdit={onEdit} />
+    <div className="App">
+      <Header getEdit={getEdit} />
+      <Routes>
+        <Route path="/" element={<List onEdit={onEdit} />} />
+        {getEdit ? (
+          <Route
+            path="/update"
+            element={
+              <Input
+                getData={getData}
+                handleChange={handleChange}
+                onSubmit={onSubmit}
+                getEdit={getEdit}
+                onUpdate={onUpdate}
+              />
+            }
+          />
+        ) : (
+          <Route
+            path="/create"
+            element={
+              <Input
+                getData={getData}
+                handleChange={handleChange}
+                onSubmit={onSubmit}
+                getEdit={getEdit}
+                onUpdate={onUpdate}
+              />
+            }
+          />
+        )}
+      </Routes>
     </div>
   );
 }
